@@ -79,10 +79,15 @@ function render_items() {
     videos.sort(compare_by_dislike_percent);
     var html = '';
     for (var i = 0; i < 10 && items_rendered < videos.length; i++, items_rendered++) {
-      html += '<a href="https://www.youtube.com/watch?v=' + videos[items_rendered].id + '" style="display:block;">';
-      html += '<div>' + videos[items_rendered].title + '</div>';
-      html += '<div>' + videos[items_rendered].dislike_percent + '%</div>';
-      html += '<img src="' + videos[items_rendered].thumbnail + '">'
+      html += '<a href="https://www.youtube.com/watch?v=' + videos[items_rendered].id + '" style="display:block;" class="row">';
+      html +=   '<div class="col-md-4">';
+      html +=     '<img src="' + videos[items_rendered].thumbnail + '" class="img-fill">';
+      html +=   '</div>';
+      html +=   '<div class="col-md-8">';
+      html +=     '<h2>' + videos[items_rendered].title + '</h2>';
+      html +=     '<h3>' + Math.round(videos[items_rendered].dislike_percent) + '% of people disliked this video.</h3>';
+      html +=     '<div>Likes: ' + videos[items_rendered].likes + ' Dislikes: ' + videos[items_rendered].dislikes + '</div>';
+      html +=   '</div>';
       html += '</a>';
     }
     set_status('Complete.');
@@ -123,6 +128,7 @@ function find_videos()
           fetch_list_page(playlist_items_request, '');
         });
       } else {
+        running = false;
         set_status('Channel "' + channel_name + '" does not exist.');
       }
     });
@@ -131,10 +137,12 @@ function find_videos()
 
 function set_status(message) {
   $('#status').text(message);
+  $('#status').show();
 }
 
 function reset() {
     $('#status').empty();
+    $('#status').hide();
     $('#results').empty();
     $('#more').hide();
     videos = [];

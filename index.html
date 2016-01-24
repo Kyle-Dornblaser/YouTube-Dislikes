@@ -3,20 +3,36 @@
   <head>
     <meta charset='utf-8' />
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.mine.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <style>
+      .img-fill {
+        background: 100%;
+      }
+      .row {
+        margin: 0 0 10px 0;
+      }
+    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="app.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=load"></script>
+    <script src="app.js"></script>
   </head>
   <body>
-    <form action="javascript:find_videos();">
-      <input type="text" id="channel_name">
-      <input type="submit">
-    </form>
-    <div id="status"></div>
+  <div class="container">
+    <div class="jumbotron">
+      <form action="javascript:find_videos();">
+        <div class="input-group">
+          <input type="text" id="channel_name" class="form-control">
+          <span class="input-group-btn">
+            <input type="submit" class="btn btn-success">
+          </span>
+        </div>
+      </form>
+    </div>
+    <div id="status" class="alert alert-info" style="display:none;"></div>
     <div id="results">
 
     </div>
-    <button id="more" style="display:none;">Load more</button>
+    <button id="more" class="btn btn-primary btn-large" style="display:none;">Load more</button>
+  </div>
   </body>
 </html>
