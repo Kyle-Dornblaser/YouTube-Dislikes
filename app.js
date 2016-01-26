@@ -22,7 +22,7 @@ var Video = function(id, likes, dislikes, title, thumbnail) {
 
 $(function() {
   $('#more').click(function() {
-    render_items();
+    render_items(true);
   });
 });
 
@@ -65,33 +65,54 @@ function get_item_info(video_ids_array, last)
     }
     ajax_completed++;
   });
+  render_items(false);
   if (last) {
-    render_items();
+    done();
   }
 }
 
-function render_items() {
-  if (ajax_calls !== ajax_completed) {
-    setTimeout(function() {
-      render_items();
-    }, 100);
-  } else {
+function render_items(add_more) {
     videos.sort(compare_by_dislike_percent);
     var html = '';
-    for (var i = 0; i < 10 && items_rendered < videos.length; i++, items_rendered++) {
-      html += '<a href="https://www.youtube.com/watch?v=' + videos[items_rendered].id + '" style="display:block;" class="row">';
+    for (var i = 0; i < 10 && items_rendered < videos.length; i++) {
+      var index;
+      if (add_more) {
+        index = items_rendered;
+      } else {
+        index = i;
+      }
+      html += '<a href="https://www.youtube.com/watch?v=' + videos[index].id + '" style="display:block;" class="row">';
       html +=   '<div class="col-md-4">';
-      html +=     '<img src="' + videos[items_rendered].thumbnail + '" class="img-fill">';
+      html +=     '<img src="' + videos[index].thumbnail + '" class="img-fill">';
       html +=   '</div>';
       html +=   '<div class="col-md-8">';
-      html +=     '<h2>' + videos[items_rendered].title + '</h2>';
-      html +=     '<h3>' + Math.round(videos[items_rendered].dislike_percent) + '% of people disliked this video.</h3>';
-      html +=     '<div>Likes: ' + videos[items_rendered].likes + ' Dislikes: ' + videos[items_rendered].dislikes + '</div>';
+      html +=     '<h2>' + videos[index].title + '</h2>';
+      html +=     '<h3>' + Math.round(videos[index].dislike_percent) + '% of people disliked this video.</h3>';
+      html +=     '<div>Likes: ' + videos[index].likes + ' Dislikes: ' + videos[index].dislikes + '</div>';
       html +=   '</div>';
       html += '</a>';
+      if (add_more || items_rendered < 10) {
+        items_rendered++;
+      }
     }
+    if (add_more) {
+      $('#results').append(html);
+    } else {
+      $('#results').html(html);
+    }
+    if (items_rendered === videos.length) {
+      $('#more').hide();
+    }
+}
+
+function done() {
+  if (ajax_calls !== ajax_completed) {
+    setTimeout(function() {
+      done();
+    }, 100);
+  } else {
     set_status('Complete.');
-    $('#results').append(html);
+    render_items(false);
     $('#more').show();
     running = false;
   }
