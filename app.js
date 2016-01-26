@@ -81,16 +81,18 @@ function render_items(add_more) {
       } else {
         index = i;
       }
-      html += '<a href="https://www.youtube.com/watch?v=' + videos[index].id + '" style="display:block;" class="row">';
+      html += '<div class="row">';
       html +=   '<div class="col-md-4">';
-      html +=     '<img src="' + videos[index].thumbnail + '" class="img-fill">';
+      html +=     '<a href="https://www.youtube.com/watch?v=' + videos[index].id + '">';
+      html +=       '<img src="' + videos[index].thumbnail + '" class="img-fill">';
+      html +=     '</a>';
       html +=   '</div>';
       html +=   '<div class="col-md-8">';
-      html +=     '<h2>' + videos[index].title + '</h2>';
+      html +=     '<h2><a href="https://www.youtube.com/watch?v=' + videos[index].id + '">' + videos[index].title + '</a></h2>';
       html +=     '<h3>' + Math.round(videos[index].dislike_percent) + '% of people disliked this video.</h3>';
-      html +=     '<div>Likes: ' + videos[index].likes + ' Dislikes: ' + videos[index].dislikes + '</div>';
+      html +=     '<h3><span class="label label-primary">Likes: ' + videos[index].likes + ' <span class="glyphicon glyphicon-thumbs-up"></span></span> <span class="label label-danger">Dislikes: ' + videos[index].dislikes + ' <span class="glyphicon glyphicon-thumbs-down"></span></span></h3>';
       html +=   '</div>';
-      html += '</a>';
+      html += '</div>';
       if (add_more || items_rendered < 10) {
         items_rendered++;
       }
