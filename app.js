@@ -42,7 +42,7 @@ function fetch_list_page(request, token)
     }
     items_processed += data.items.length;
     total_items = data.pageInfo.totalResults;
-    set_status('Loading results. ' + items_processed + ' of about ' + total_items + ' videos processed.');
+    set_status('Loading results. ' + items_processed + ' of about ' + total_items + ' videos processed.', 'info');
     var video_ids = [];
     for (var i = 0; i < data.items.length; i++)
     {
@@ -111,7 +111,7 @@ function done() {
       done();
     }, 100);
   } else {
-    set_status('Complete.');
+    set_status('Complete.', 'success');
     render_items(false);
     $('#more').show();
     running = false;
@@ -134,9 +134,9 @@ function find_videos()
   } else {
     running = true;
     reset();
-    set_status('Loading results.');
+    set_status('Loading results.', 'info');
     var channel_name = $('#channel_name').val();
-    set_status('Searching for channel.');
+    set_status('Searching for channel.', 'info');
     var request = 'https://www.googleapis.com/youtube/v3/search?part=id%2Csnippet&maxResults=1&q=' + channel_name + '&type=channel&key=' + apiKey;
     $.get(request, function(data) {
       if (data.items.length > 0) {
@@ -150,14 +150,15 @@ function find_videos()
         });
       } else {
         running = false;
-        set_status('Channel "' + channel_name + '" does not exist.');
+        set_status('Channel "' + channel_name + '" does not exist.', 'danger');
       }
     });
   }
 }
 
-function set_status(message) {
+function set_status(message, alert_type) {
   $('#status').text(message);
+  $('#status').removeClass().addClass('alert alert-' + alert_type)
   $('#status').show();
 }
 
